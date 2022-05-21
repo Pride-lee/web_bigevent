@@ -1,5 +1,15 @@
 $(function () {
   getUserInfo();
+
+  const layer = layui.layer;
+  $("#outbtn").click(() => {
+    layer.confirm("确定退出登录？", { icon: 3, title: "" }, function (index) {
+      // 清空本地存储里面的 token
+      localStorage.removeItem("token");
+      // 重新跳转到登录页面
+      location.href = "/login.html";
+    });
+  });
 });
 
 const layer = layui.layer;
@@ -18,6 +28,16 @@ function getUserInfo() {
       layer.msg("获取成功！");
       renderAvatar(res.data);
     },
+    // 不论成功失败 最终都会调用这个回调函数.已放到baseapi里统一处理
+    // complete: (res) => {
+    //   if (
+    //     res.responseJSON.status === 1 &&
+    //     res.responseJSON.message === "身份认证失败！"
+    //   ) {
+    //     localStorage.removeItem("token");
+    //     location.href = "/login.html"
+    //   }
+    // },
   });
 }
 
